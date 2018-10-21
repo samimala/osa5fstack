@@ -1,5 +1,5 @@
 import React from 'react'
-import Blog from './components/Blog'
+import BlogList from './components/BlogList'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -10,6 +10,7 @@ class App extends React.Component {
       blogs: [],
       username: '',
       password: '',
+      error: '',
       user: null
     }
   }
@@ -20,20 +21,20 @@ class App extends React.Component {
     )
   } 
 
-  login = (event) => {
+  login = async (event) => {
     event.preventDefault()
     console.log('Login - username: ', this.state.username, ' password: ', this.state.password)
     try {
-      const response = loginService.login({
+      const response = await loginService.login({
         username: this.state.username,
         password: this.state.password
       })
-      response.then(this.setState({ 
+      console.log('login response: ', response)
+      this.setState({ 
         username: '', 
         password: '',
-        user: response.user
+        user: response
       })
-      )
     } 
     catch (exception) {
       this.setState({
@@ -54,6 +55,7 @@ class App extends React.Component {
         <h2>login</h2>
         <form onSubmit={this.login}>
           <div>
+            <p>{this.state.error}</p>
             <b>username</b>
             <input 
               type="text" 
@@ -74,21 +76,16 @@ class App extends React.Component {
       </div>
     )
 
-    const noneloggedin = () => {}
-
-    const loggedin = () => {
-      <div>
-        {this.state.username} logged in 
-      </div>
-    }
-
     const blogs = () => (
       <div>
         <h2>blogs</h2>
-        {this.state.user=== null?noneloggedin():loggedin()}
-        {this.state.blogs.map(blog => 
-          <Blog key={blog._id} blog={blog}/>
-        )}
+        <p>
+          {this.state.user.username} logged in 
+        </p>
+        {console.log('Calling BlogList', this.state.blogs)}
+        
+        <BlogList blogs={this.state.blogs} />
+        
       </div>
     )
     
