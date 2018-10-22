@@ -7,6 +7,9 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      newBlogUrl: '',
+      newBlogAuthor: '',
+      newBlogTitle: '',
       blogs: [],
       username: '',
       password: '',
@@ -24,6 +27,7 @@ class App extends React.Component {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       this.setState({user})
+      blogService.setToken(user.token)
     }
   } 
 
@@ -51,8 +55,39 @@ class App extends React.Component {
     setTimeout(() => { this.setState({ error: null }) }, 5000)
   }
 
+  createBlog = async (event) => {
+    event.preventDefault()
+    try {
+      const newBlog = {
+        url: this.state.newBlogUrl,
+        title: this.state.newBlogTitle,
+        author: this.state.newBlogAuthor
+      }
+      console.log('Sending new blog:', newBlog)
+      const response = await blogService.create(newBlog)
+      console.log('createBlog response', response)
+      this.setState({
+        blogs: this.state.blogs.concat(response),
+        newBlog: {}
+      })
+    }
+    catch (exception) {
+      this.setState({
+        error: 'Adding blog failed',
+        newBlog: {}
+      })
+    }
+    setTimeout(() => { this.setState({ error: null }) }, 5000)
+  }
+
   handleLoginFieldChange = (event) => {
     this.setState( { [event.target.name] : event.target.value })
+  }
+
+  handleBlogFieldChange = (event) => {
+    const key = event.target.name
+    console.log('Key is ' + key)
+    this.setState( { [key] : event.target.value })
   }
 
   onLogout = () => {
@@ -87,16 +122,48 @@ class App extends React.Component {
       </div>
     )
 
+    const createBlogForm = () => (
+      <div>
+        <h2>create new</h2>
+        <form onSubmit={this.createBlog}>
+        <div>
+          <b>title</b>
+          <input 
+            type="text" 
+            name="newBlogTitle" 
+            value={this.state.newBlogTitle}
+            onChange={this.handleBlogFieldChange}/>
+        </div>
+        <div>
+          <b>author</b>
+          <input 
+            type="text" 
+            name="newBlogAuthor" 
+            value={this.state.newBlogAuthor}
+            onChange={this.handleBlogFieldChange}/>
+        </div>
+        <div>
+          <b>url</b>
+          <input 
+            type="text" 
+            name="newBlogUrl" 
+            value={this.state.newBlogUrl}
+            onChange={this.handleBlogFieldChange}/>
+        </div>
+        <button type="submit">create</button>
+        </form>
+      </div>
+    )
     const blogs = () => (
       <div>
         <h2>blogs</h2>
         <p>
           {this.state.user.username} 
-          logged in
+          {' logged in '}
           <button onClick={this.onLogout}>Logout</button>
         </p>
         {console.log('Calling BlogList', this.state.blogs)}
-        
+        {createBlogForm()}
         <BlogList blogs={this.state.blogs} />
         
       </div>
