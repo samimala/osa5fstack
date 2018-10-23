@@ -2,6 +2,8 @@ import React from 'react'
 import BlogList from './components/BlogList'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Togglable from './components/Togglable'
+import CreateBlogForm from './components/CreateBlogForm'
 
 class App extends React.Component {
   constructor(props) {
@@ -15,6 +17,7 @@ class App extends React.Component {
       password: '',
       error: null,
       notification: null,
+      createBlogVisible: false,
       user: null
     }
   }
@@ -59,6 +62,7 @@ class App extends React.Component {
 
   createBlog = async (event) => {
     event.preventDefault()
+    this.createBlogForm.toggleVisibility()
     try {
       const newBlog = {
         url: this.state.newBlogUrl,
@@ -140,38 +144,7 @@ class App extends React.Component {
       </div>
     )
 
-    const createBlogForm = () => (
-      <div>
-        <h2>create new</h2>
-        <form onSubmit={this.createBlog}>
-        <div>
-          <b>title</b>
-          <input 
-            type="text" 
-            name="newBlogTitle" 
-            value={this.state.newBlogTitle}
-            onChange={this.handleBlogFieldChange}/>
-        </div>
-        <div>
-          <b>author</b>
-          <input 
-            type="text" 
-            name="newBlogAuthor" 
-            value={this.state.newBlogAuthor}
-            onChange={this.handleBlogFieldChange}/>
-        </div>
-        <div>
-          <b>url</b>
-          <input 
-            type="text" 
-            name="newBlogUrl" 
-            value={this.state.newBlogUrl}
-            onChange={this.handleBlogFieldChange}/>
-        </div>
-        <button type="submit">create</button>
-        </form>
-      </div>
-    )
+
     const blogs = () => (
       <div>
         <Notification note={this.state.notification}/> 
@@ -182,9 +155,16 @@ class App extends React.Component {
           <button onClick={this.onLogout}>Logout</button>
         </p>
         {console.log('Calling BlogList', this.state.blogs)}
-        {createBlogForm()}
+        <Togglable buttonLabel="Create new blog" ref={component=>this.createBlogForm=component}>
+          <CreateBlogForm
+            newBlogTitle={this.state.newBlogTitle}
+            newBlogAuthor={this.state.newBlogAuthor}
+            newBlogUrl={this.state.newBlogUrl}
+            handleChange={this.handleBlogFieldChange}
+            handleSubmit={this.createBlog}
+          />
+        </Togglable>
         <BlogList blogs={this.state.blogs} />
-        
       </div>
     )
     
