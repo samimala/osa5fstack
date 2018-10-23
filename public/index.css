@@ -1,0 +1,11 @@
+.error {
+    color: red;
+    border-style: solid;
+    border-color: red;
+}
+
+.notification {
+    color: green;
+    border-style: solid;
+    border-color: green;
+}
