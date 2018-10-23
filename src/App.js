@@ -13,7 +13,8 @@ class App extends React.Component {
       blogs: [],
       username: '',
       password: '',
-      error: '',
+      error: null,
+      notification: null,
       user: null
     }
   }
@@ -46,10 +47,11 @@ class App extends React.Component {
         password: '',
         user: response
       })
+      blogService.setToken(response.token)
     } 
     catch (exception) {
       this.setState({
-        error: 'Kredentiaaleissa vikaa'
+        error: 'wrong username or pasword'
       })
     }
     setTimeout(() => { this.setState({ error: null }) }, 5000)
@@ -66,8 +68,10 @@ class App extends React.Component {
       console.log('Sending new blog:', newBlog)
       const response = await blogService.create(newBlog)
       console.log('createBlog response', response)
+      console.log('Toimiiko: ',"a new blog '" + response.title + "' by " + response.author + " added")
       this.setState({
         blogs: this.state.blogs.concat(response),
+        notification: "a new blog '" + response.title + "' by " + response.author + " added",
         newBlog: {}
       })
     }
@@ -77,7 +81,7 @@ class App extends React.Component {
         newBlog: {}
       })
     }
-    setTimeout(() => { this.setState({ error: null }) }, 5000)
+    setTimeout(() => { this.setState({ error: null, notification: null }) }, 5000)
   }
 
   handleLoginFieldChange = (event) => {
@@ -96,12 +100,26 @@ class App extends React.Component {
   }
   
   render() {
+    const Error = ({error}) => {
+      if (error==null) {
+        return null
+      }
+      return (<div className="error">{error}</div>)
+    }
+
+    const Notification = ({note}) => {
+      if (note==null) {
+        return null
+      }
+      return (<div className="notification">{note}</div>)
+    }
+
     const loginForm = () => (
       <div>
+        <Error error={this.state.error}/> 
         <h2>login</h2>
         <form onSubmit={this.login}>
-          <div>
-            <p>{this.state.error}</p>
+          <div>           
             <b>username</b>
             <input 
               type="text" 
@@ -156,6 +174,7 @@ class App extends React.Component {
     )
     const blogs = () => (
       <div>
+        <Notification note={this.state.notification}/> 
         <h2>blogs</h2>
         <p>
           {this.state.user.username} 
