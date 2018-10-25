@@ -10,6 +10,7 @@ const BlogList = (props) => (
         url={blog.url}
         likes = {blog.likes}
         user={blog.user}
+        onIncLikes={props.onIncLikes(blog)}
       />
     )
 )

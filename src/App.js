@@ -22,10 +22,9 @@ class App extends React.Component {
     }
   }
 
-  componentDidMount() {
-    blogService.getAll().then(blogs =>
-      this.setState({ blogs })
-    )
+  async componentDidMount() {
+    const blogs = await blogService.getAll()
+    this.setState({ blogs })
 
     const loggedUserJSON = window.localStorage.getItem('loggerBlogSystemUser')
     if (loggedUserJSON) {
@@ -87,6 +86,22 @@ class App extends React.Component {
     }
     setTimeout(() => { this.setState({ error: null, notification: null }) }, 5000)
   }
+
+  incBlogLikes = () => (blog) => async () => {
+    const updatedBlog = {
+      id: blog.id,
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      likes: blog.likes+1,
+      user: blog.user.token
+    }
+    console.log('Increase likes for blog: ', blog.title)
+    const response = await blogService.update(updatedBlog)  
+    const blogs = await blogService.getAll()
+    this.setState({ blogs })
+  }
+
 
   handleLoginFieldChange = (event) => {
     this.setState( { [event.target.name] : event.target.value })
@@ -164,7 +179,10 @@ class App extends React.Component {
             handleSubmit={this.createBlog}
           />
         </Togglable>
-        <BlogList blogs={this.state.blogs} />
+        <BlogList 
+            blogs={this.state.blogs}
+            onIncLikes={this.incBlogLikes()}
+         />
       </div>
     )
     

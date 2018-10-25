@@ -13,6 +13,17 @@ const setToken = (newToken) => {
   token = `bearer ${newToken}`
 }
 
+const update = async (updatedObject) => {
+  const config = {
+    headers: { 'Authorization': token }
+  }
+  const updateUrl = baseUrl + '/' + updatedObject.id
+
+  console.log('Inside blogs.update')
+  const response = await axios.put(updateUrl, updatedObject, config)
+  return response.data
+}
+
 const create = async (newObject) => {
   const config = {
     headers: { 'Authorization': token }
@@ -23,4 +34,4 @@ const create = async (newObject) => {
   return response.data
 }
 
-export default { getAll, setToken, create }
+export default { getAll, setToken, create, update }

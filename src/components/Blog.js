@@ -18,6 +18,8 @@ class Blog extends React.Component {
     borderWidth: 1,
     marginBottom: 5
   }
+
+
   render() {
     const hideWhenCompressed = { display: this.state.compressedForm ? 'none': ''}
     const showWhenCompressed = { display: this.state.compressedForm ? '' : 'none'}
@@ -36,7 +38,7 @@ class Blog extends React.Component {
           <div>
             {this.props.likes} 
             {' likes '}
-            <button>like</button>
+            <button onClick={this.props.onIncLikes}>like</button>
           </div>
           <div>
             {'Added by '} {this.props.user.name}
