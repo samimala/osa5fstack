@@ -6,7 +6,7 @@ let token = null
 const getAll = async () => {
   const response = await axios.get(baseUrl)
   console.log('Response data: ', response.data)
-  return response.data
+  return response.data.sort((a,b)=>b.likes-a.likes)
 }
 
 const setToken = (newToken) => {
