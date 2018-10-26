@@ -102,6 +102,22 @@ class App extends React.Component {
     this.setState({ blogs })
   }
 
+  //--- jatka tästä
+  deleteBlog = () => (blog) => async () => {
+    console.log('Delete blog: ', blog.title)
+    if (!window.confirm('Really want to get rid of: ' + blog.title)) {
+      return
+    }
+    try {
+      const response = await blogService.deleteBlog(blog)  
+    }
+    catch(exception) {
+      window.alert('Could not delete blog: ' + blog.title)
+    }
+    const blogs = await blogService.getAll()
+    this.setState({ blogs })
+  }
+
 
   handleLoginFieldChange = (event) => {
     this.setState( { [event.target.name] : event.target.value })
@@ -182,6 +198,7 @@ class App extends React.Component {
         <BlogList 
             blogs={this.state.blogs}
             onIncLikes={this.incBlogLikes()}
+            onDeleteBlog={this.deleteBlog()}
          />
       </div>
     )

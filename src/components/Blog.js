@@ -41,7 +41,10 @@ class Blog extends React.Component {
             <button onClick={this.props.onIncLikes}>like</button>
           </div>
           <div>
-            {'Added by '} {this.props.user.name}
+            {'Added by '} {this.props.user? this.props.user.name : 'unknown'}
+          </div>
+          <div>
+            <button onClick={this.props.onDeleteBlog}>delete</button>
           </div>
         </div>
       </div>

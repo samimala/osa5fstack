@@ -11,6 +11,7 @@ const BlogList = (props) => (
         likes = {blog.likes}
         user={blog.user}
         onIncLikes={props.onIncLikes(blog)}
+        onDeleteBlog={props.onDeleteBlog(blog)}
       />
     )
 )
