@@ -195,7 +195,8 @@ class App extends React.Component {
             handleSubmit={this.createBlog}
           />
         </Togglable>
-        <BlogList 
+        <BlogList
+            currentLogin={this.state.user} 
             blogs={this.state.blogs}
             onIncLikes={this.incBlogLikes()}
             onDeleteBlog={this.deleteBlog()}

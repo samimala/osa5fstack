@@ -5,6 +5,7 @@ const BlogList = (props) => (
     props.blogs.map(blog => 
       <Blog 
         key={blog.id} 
+        currentLogin={props.currentLogin}
         title={blog.title} 
         author={blog.author}
         url={blog.url}

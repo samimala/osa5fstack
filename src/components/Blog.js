@@ -44,7 +44,8 @@ class Blog extends React.Component {
             {'Added by '} {this.props.user? this.props.user.name : 'unknown'}
           </div>
           <div>
-            <button onClick={this.props.onDeleteBlog}>delete</button>
+            {(!this.props.user || this.props.currentLogin.username===this.props.user.username) &&          
+              <button onClick={this.props.onDeleteBlog}>delete</button>}
           </div>
         </div>
       </div>
