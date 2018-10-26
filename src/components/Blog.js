@@ -22,7 +22,6 @@ class Blog extends React.Component {
 
   render() {
     const hideWhenCompressed = { display: this.state.compressedForm ? 'none': ''}
-    const showWhenCompressed = { display: this.state.compressedForm ? '' : 'none'}
 
     return (
       <div style={this.blogStyle}>      
