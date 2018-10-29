@@ -10,6 +10,8 @@ describe.only('<SimpleBlog />', () => {
             likes: 10
         }
 
+        
+
         const blogComponent = shallow(<SimpleBlog blog={simpleBlog} />)
         console.log(blogComponent.debug())
 
@@ -22,5 +24,20 @@ describe.only('<SimpleBlog />', () => {
 
         console.log(contentDiv1.debug())
         console.log(contentDiv2.debug())
+    }),
+
+    it('test onClick', () => {
+        const simpleBlog = {
+            title: 'Testititle',
+            author: 'Testiauthor',
+            likes: 10
+        }
+
+        const mockHandler = jest.fn()
+        const blogComponent = shallow(<SimpleBlog blog={simpleBlog} onClick={ mockHandler }/>)
+        const button = blogComponent.find('button')
+        button.simulate('click')
+        button.simulate('click')
+        expect(mockHandler.mock.calls.length).toBe(2)
     })
 })
