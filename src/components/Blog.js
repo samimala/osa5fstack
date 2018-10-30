@@ -24,13 +24,13 @@ class Blog extends React.Component {
     const hideWhenCompressed = { display: this.state.compressedForm ? 'none': ''}
 
     return (
-      <div style={this.blogStyle}>      
-        <span onClick={this.toggleCompression}> 
+      <div style={this.blogStyle} className='allContent'>      
+        <span onClick={this.toggleCompression} className='toggler'> 
            {this.props.title}
         </span> 
         {' '}
         {this.props.author}
-        <div style={hideWhenCompressed}>
+        <div style={hideWhenCompressed} className='toggleContent'>
           <div>
             <a href={this.props.url}>{this.props.url}</a> 
           </div>
