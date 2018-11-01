@@ -150,7 +150,7 @@ class App extends React.Component {
     }
 
     const loginForm = () => (
-      <div>
+      <div className="loginform">
         <Error error={this.state.error}/> 
         <h2>login</h2>
         <form onSubmit={this.login}>
