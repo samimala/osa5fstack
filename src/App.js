@@ -25,7 +25,7 @@ class App extends React.Component {
   async componentDidMount() {
     const blogs = await blogService.getAll()
     this.setState({ blogs })
-
+    console.log('App:', blogs)
     const loggedUserJSON = window.localStorage.getItem('loggerBlogSystemUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)

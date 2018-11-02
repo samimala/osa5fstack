@@ -2,7 +2,7 @@ let token=null
 
 const blogs = [
     {
-        id: "234242323424234242",
+        id: "134242323424234242",
         title: "title 1",
         url: "url 1",
         author: "author 1",
@@ -67,4 +67,8 @@ const getAll = () => {
     return Promise.resolve(blogs)
 }
 
-export default { getAll, blogs }
+const setToken = (newToken) => {
+    token = newToken
+}
+
+export default { getAll, blogs, setToken }
